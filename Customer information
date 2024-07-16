@@ -1,0 +1,95 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class CustomerShowSwing extends JFrame {
+
+    private JLabel idLabel;
+    private JLabel lastNameLabel;
+    private JLabel firstNameLabel;
+    private JLabel phoneLabel;
+
+    private JButton previousButton;
+    private JButton nextButton;
+
+    private int currentIndex = 0; // Index of the current customer record
+    private String[][] customers = {
+            {"1", "Chanda", "Sovisal", "0992888999"},
+            {"2", "Kom", "Lina", "092000999"},
+            {"3", "Chan", "Seyha", "092777666"}
+    };
+
+    public CustomerShowSwing() {
+        super("Customer Information");
+
+        // Initialize components
+        idLabel = new JLabel();
+        lastNameLabel = new JLabel();
+        firstNameLabel = new JLabel();
+        phoneLabel = new JLabel();
+
+        previousButton = new JButton("Previous");
+        nextButton = new JButton("Next");
+
+        // Layout
+        JPanel infoPanel = new JPanel(new GridLayout(4, 2, 5, 5));
+        infoPanel.add(new JLabel("ID:"));
+        infoPanel.add(idLabel);
+        infoPanel.add(new JLabel("Last Name:"));
+        infoPanel.add(lastNameLabel);
+        infoPanel.add(new JLabel("First Name:"));
+        infoPanel.add(firstNameLabel);
+        infoPanel.add(new JLabel("Phone:"));
+        infoPanel.add(phoneLabel);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(previousButton);
+        buttonPanel.add(nextButton);
+
+        // Set initial customer information
+        displayCustomer(currentIndex);
+
+        // Add components to frame
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(infoPanel, BorderLayout.CENTER);
+        getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+
+        // Button actions
+        previousButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                currentIndex--;
+                if (currentIndex < 0) {
+                    currentIndex = customers.length - 1;
+                }
+                displayCustomer(currentIndex);
+            }
+        });
+
+        nextButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                currentIndex++;
+                if (currentIndex >= customers.length) {
+                    currentIndex = 0;
+                }
+                displayCustomer(currentIndex);
+            }
+        });
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(300, 200);
+        setLocationRelativeTo(null); // Center the frame on screen
+        setVisible(true);
+    }
+
+    private void displayCustomer(int index) {
+        idLabel.setText(customers[index][0]);
+        lastNameLabel.setText(customers[index][1]);
+        firstNameLabel.setText(customers[index][2]);
+        phoneLabel.setText(customers[index][3]);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new CustomerShowSwing());
+    }
+}
